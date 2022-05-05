@@ -10,7 +10,7 @@ export const foodDb = [
         "id": "2",
         "resname": "Amore Mio",
         "dishname": "Pasta Roze",
-        "image": "https://www.https://yaarsblog.com/wp-content/uploads/2017/07/pasta-rosa_2-1.jpg.com/wp-content/uploads/2018/03/manghatnpost.jpg",
+        "image": "https://www.foodisgood.co.l/wp-content/uploads/2020/12/tomato-cream-sauce-recipe-939x626.jpg",
         "stars": "3"
     },
     {

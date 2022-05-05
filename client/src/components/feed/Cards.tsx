@@ -4,6 +4,7 @@ import { Button, Card } from "react-bootstrap";
 //
 export const Cards = ({ id, resname, dishname, image, stars }: any) => {
   return (
+    
     <Card style={{ width: "18rem" }}>
       <Card.Img variant="top" src={image} />
       <Card.Body>

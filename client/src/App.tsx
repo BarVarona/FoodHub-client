@@ -1,21 +1,25 @@
-import Login from "./pages/Login";
+import { Col, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Home from "./pages/Home";
-import Register from "./pages/Register";
-import { useEffect } from "react";
-import { dishs } from "./api/dishs";
+import { AppState, StateContext } from "./components/context/StateContext";
+import { useState } from "react";
 function App() {
-  useEffect(() => {
-    const foo = async () => {
-      await dishs()
+  const [appState, setAppState] = useState<AppState>({
+    dishes: null,
+  });
 
-    }
-    foo()
-  },[])
   return (
-    <div>
-      {/* <Login /> */}
-      <Home />
-    </div>
+    <StateContext.Provider
+      value={{ appState, setAppState: setAppState as any }}
+    >
+      <Container>
+        <Row>
+          <Col>
+            <Home />
+          </Col>
+        </Row>
+      </Container>
+    </StateContext.Provider>
   );
 }
 
