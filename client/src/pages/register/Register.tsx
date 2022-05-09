@@ -1,7 +1,8 @@
 import React, {useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import { RegisterAuth } from "../api/newUserAuth";
-import { NewUserAuth } from "../interface/NewUserAuth.model";
+import { RegisterAuth } from "../../api/newUserAuth";
+import { NewUserAuth } from "../../interface/NewUserAuth.model";
+
 
 function Register() {
   const [val, setVal] = useState<NewUserAuth>({
@@ -35,11 +36,12 @@ function Register() {
   return (
     <div className="Register">
       <div className="col-2">
-      <h1>Register</h1>
+      <h1 style={{color:"orange"}}>Register</h1>
       <Form onSubmit={handelSubmit}>
        <Form.Group className="mb-3" controlId="formBasicFirstName">
-        <Form.Label>First Name</Form.Label>
-        <Form.Control 
+        <Form.Label style={{width:"100px"}}>First Name</Form.Label>
+        <Form.Control
+        style={{width: "250px"}}
         type="FirstName" 
         placeholder=" Enter FirstName"
         name="FirstName"
@@ -48,16 +50,18 @@ function Register() {
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicLastName">
-      <Form.Label>Last Name</Form.Label>
+      <Form.Label style={{width:"100px"}}>Last Name</Form.Label>
      <Form.Control 
+     style={{width: "250px"}}
       type="lastname"
       placeholder="Enter LastName"
       name="lastname"
       onChange={handelInputValue} />
      </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email</Form.Label>
+        <Form.Label style={{width:"100px"}}>Email</Form.Label>
        <Form.Control 
+       style={{width: "250px"}}
        type="email" 
        placeholder="Enter Email"
        name="email"
@@ -65,8 +69,9 @@ function Register() {
        />
   </Form.Group>
   <Form.Group className="mb-3" controlId="formBasicPassword">
-    <Form.Label>Password</Form.Label>
+    <Form.Label style={{width:"100px"}}>Password</Form.Label>
     <Form.Control
+    style={{width: "250px"}}
      type="password" 
      placeholder="Enter Password"
      name="password"
@@ -74,19 +79,20 @@ function Register() {
      />
   </Form.Group>
   <Form.Group className="mb-3" controlId="formBasicPassword">
-    <Form.Label>Confrim Password</Form.Label>
+    <Form.Label style={{width:"150px"}}>Confrim Password</Form.Label>
     <Form.Control 
+    style={{width: "250px"}}
     type="password" 
     placeholder="Confrim Password"
     name="password"
     onChange={handelInputValue}
     />
   </Form.Group>
-  <Button variant="success" type="submit">
+  <Button variant="warning" type="submit">
     Register
   </Button>
 </Form>
-</div>
+  </div>
 </div>
   );
 }

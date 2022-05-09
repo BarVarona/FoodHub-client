@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../header/Header';
-import profileimg from '../../profile.jpg';
+import profileimg from '../../images/profile.jpg';
 function Topbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-dark bg-black ">

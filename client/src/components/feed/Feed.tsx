@@ -4,7 +4,6 @@ import { StateContext } from "../../components/context/StateContext";
 import { IDishes } from "../../interface/IDishes.model";
 import { Cards } from "./Cards";
 
-
 export const Feed = () => {
   // please be attention that in useState i add operator null  <IDishes[]|null>
   const [foods, setFoods] = useState<IDishes[]|null>();
