@@ -1,22 +1,23 @@
-import React, {useState } from "react";
+import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import { RegisterAuth } from "../../api/newUserAuth";
+import { registerAuth } from "../../api/newUserAuth"
+import { StateContext } from "../../components/context/StateContext";
 import { NewUserAuth } from "../../interface/NewUserAuth.model";
 
-
 function Register() {
+  const { appState, setAppState } = useContext(StateContext);
   const [val, setVal] = useState<NewUserAuth>({
     firstName: "",
     lastName: "",
-    email: "1",
+    email: "",
     password: "",
-    confirmPassword: ""
+    // confirmPassword: "",
   });
 
   const handelInputValue = (e: any) => {
     const { name, value } = e.target;
     if (name === "FirstName") {
-      setVal({ ...val, firstName: value });  
+      setVal({ ...val, firstName: value });
     }
     if (name === "lastname") {
       setVal({ ...val, lastName: value });
@@ -26,74 +27,75 @@ function Register() {
     }
     if (name === "password") {
       setVal({ ...val, password: value });
-   }
+    }
   };
-  const handelSubmit = (e: any) => {
+  const handelSubmit = async (e: any) => {
     e.preventDefault();
-    if (val) RegisterAuth(val);
+
+    if (val) {
+      const getUserInfo = await registerAuth(val);
+      if (getUserInfo) {
+        setAppState({ ...appState, userInfo: getUserInfo });
+      }
+    }
   };
 
   return (
     <div className="Register">
       <div className="col-2">
-      <h1 style={{color:"orange"}}>Register</h1>
-      <Form onSubmit={handelSubmit}>
-       <Form.Group className="mb-3" controlId="formBasicFirstName">
-        <Form.Label style={{width:"100px"}}>First Name</Form.Label>
-        <Form.Control
-        style={{width: "250px"}}
-        type="FirstName" 
-        placeholder=" Enter FirstName"
-        name="FirstName"
-        onChange={handelInputValue}
-        
-        />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicLastName">
-      <Form.Label style={{width:"100px"}}>Last Name</Form.Label>
-     <Form.Control 
-     style={{width: "250px"}}
-      type="lastname"
-      placeholder="Enter LastName"
-      name="lastname"
-      onChange={handelInputValue} />
-     </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label style={{width:"100px"}}>Email</Form.Label>
-       <Form.Control 
-       style={{width: "250px"}}
-       type="email" 
-       placeholder="Enter Email"
-       name="email"
-      onChange={handelInputValue}
-       />
-  </Form.Group>
-  <Form.Group className="mb-3" controlId="formBasicPassword">
-    <Form.Label style={{width:"100px"}}>Password</Form.Label>
-    <Form.Control
-    style={{width: "250px"}}
-     type="password" 
-     placeholder="Enter Password"
-     name="password"
-      onChange={handelInputValue}
-     />
-  </Form.Group>
-  <Form.Group className="mb-3" controlId="formBasicPassword">
-    <Form.Label style={{width:"150px"}}>Confrim Password</Form.Label>
-    <Form.Control 
-    style={{width: "250px"}}
-    type="password" 
-    placeholder="Confrim Password"
-    name="password"
-    onChange={handelInputValue}
-    />
-  </Form.Group>
-  <Button variant="warning" type="submit">
-    Register
-  </Button>
-</Form>
-  </div>
-</div>
+        <h1>Register</h1>
+        <Form onSubmit={handelSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicFirstName">
+            <Form.Label>First Name</Form.Label>
+            <Form.Control
+              type="FirstName"
+              placeholder=" Enter FirstName"
+              name="FirstName"
+              onChange={handelInputValue}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicLastName">
+            <Form.Label>Last Name</Form.Label>
+            <Form.Control
+              type="lastname"
+              placeholder="Enter LastName"
+              name="lastname"
+              onChange={handelInputValue}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter Email"
+              name="email"
+              onChange={handelInputValue}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter Password"
+              name="password"
+              onChange={handelInputValue}
+            />
+          </Form.Group>
+          {/* <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Confrim Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Confrim Password"
+              name="password"
+              onChange={handelInputValue}
+            />
+          </Form.Group> */}
+          <Button variant="success" type="submit">
+            Register
+          </Button>
+        </Form>
+      </div>
+    </div>
   );
 }
 

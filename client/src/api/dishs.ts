@@ -1,9 +1,14 @@
-import axios from "axios";
-import { foodDb } from "../data/foodDb";
-import { IDishes } from "../interface/IDishes.model";
+//  import axios from "axios";
+//  import { foodDb } from "./foodDb.json";
+// import { IDishes } from "../interface/IDishes.model";
 
-export function dishs(): IDishes[] {
-  const data: IDishes[] = foodDb;
+// export function dishs(): IDishes[] {
+//    const data: IDishes[] = foodDb;
 
-  return data;
-}
+//    return data;
+// }
+import React from "react";
+
+export const dishs = () => {
+  
+};

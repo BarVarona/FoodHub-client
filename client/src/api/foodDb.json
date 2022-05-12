@@ -1,4 +1,4 @@
-export const foodDb = [
+[
     {
         "id": "1",
         "resname": "Hudson",

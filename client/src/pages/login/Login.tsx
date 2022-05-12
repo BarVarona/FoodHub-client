@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 import {loginAuth}  from "../../api/userAuth";
+import { StateContext } from "../../components/context/StateContext";
 import { UserAuth } from "../../interface/UserAuth.model";
 
 function Login() {
+  const {appState,setAppState} = useContext(StateContext);
   const [val, setVal] = useState<UserAuth>({
-    email: "1",
+    email: "",
     password: "",
   });
   useEffect(() => {
-    console.log(1);
   }, []);
 
   const handelInputValue = (e: any) => {
@@ -22,10 +23,15 @@ function Login() {
     }
   };
 
-  const handelSubmit = (e: any) => {
+  const handelSubmit = async (e: any) => {
     e.preventDefault();
-    //
-    if (val) loginAuth(val);
+    
+    if (val){
+      const getUserInfo=await loginAuth(val);
+      if(getUserInfo){
+        setAppState({...appState,userInfo:getUserInfo});
+      }
+    }
   };
   return (
     <Container>
@@ -68,7 +74,7 @@ function Login() {
           </Card>
         </Col>
         <Col>
-          <img src={require('../../images/homePagePic.png')} className='mt-4' style={{ width: "730x", height: "630px" }}></img>
+          <img src={require('../../images/homePagePic.png')} className='mt-4' style={{ width: "730px", height: "620px" }}></img>
         </Col>
       </Row>
     </Container>

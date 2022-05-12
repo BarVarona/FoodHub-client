@@ -1,8 +1,10 @@
 import { createContext } from "react";
+import { IUserInfo } from "../../api/newUserAuth";
 import { IDishes } from "../../interface/IDishes.model";
 
 export interface AppState {
   dishes: IDishes[] | null;
+  userInfo: IUserInfo| null;
 }
 
 export interface Context {
