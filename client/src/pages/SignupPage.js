@@ -6,6 +6,7 @@ import TextInputField from "../components/atoms/TextInputField";
 import { api_url, login_image, test_image } from "../consts/general.const";
 import { _orange } from "../styles/_colors";
 import axios from 'axios';
+import { ROUTES } from "../consts/routes.const";
 
 const centerFlexDivStyle = {
     width: '50%',
@@ -29,6 +30,13 @@ export default function SignupPage(props) {
         confirmPassword: "",
         agreeToTerm: false
     });
+    const [ navigate, setNavigate ] = useState(null);
+    
+    if (navigate !== null) {
+        return (
+            <Navigate replace to={navigate} />
+        );
+    }
    
 
     return (
@@ -86,7 +94,34 @@ export default function SignupPage(props) {
                     </div>
                     <br></br>
                     {/* submit button */}
-                    <NormalButton text="CREATE AN ACOOUNT" sx={{ width: '65%', borderRadius: 10 }
+                    <NormalButton text="CREATE AN ACOOUNT" sx={{ width: '65%', borderRadius: 10 }} onClick={
+                        // send register request to the api:
+                        async () => {
+                            if (!registerInfo.agreeToTerm) {
+                                alert('You must agree to the terms of usage!');
+                                return;
+                            }
+
+                            if (registerInfo.password !== registerInfo.confirmPassword) {
+                                alert('Passwords do not match!');
+                                return;
+                            }
+
+                            try {
+                                const res = await axios.post(api_url + 'auth/register', {
+                                    firstName: registerInfo.firstName,
+                                    lastName: registerInfo.lastName,
+                                    email: registerInfo.email,
+                                    password: registerInfo.password 
+                                });
+                                console.log("Register result:", res);
+                                setNavigate(ROUTES.LOGIN);
+                            }
+                            catch (err) {
+                                console.log("Signup failed", err);
+                                alert('Username exists!');
+                            }
+                        }
                     }/>
                 </div>
             </div>
