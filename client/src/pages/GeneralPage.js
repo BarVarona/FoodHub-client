@@ -8,6 +8,8 @@ import { AppPages } from "../consts/pages.const";
 import RecipesPage from "./RecipesPage";
 import FriendsPage from "./FriendsPage";
 import AboutPage from "./AboutPage";
+import ProfilePage from "./ProfilePage";
+
 
 
 export default function GeneralPage(props) {

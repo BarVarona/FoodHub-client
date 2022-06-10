@@ -5,6 +5,7 @@ import TextInputField from "../components/atoms/TextInputField";
 import { api_url, login_image, test_image } from "../consts/general.const";
 import { _orange } from "../styles/_colors";
 import axios from 'axios';
+import { ROUTES } from "../consts/routes.const";
 import { Navigate } from "react-router-dom";
 
 const centerFlexDivStyle = {
@@ -22,6 +23,13 @@ const centerFlexColDivStyle = {
 export default function LoginPage(props) {
 
     const [ loginInfo, setLoginInfo ] = useState({ email: "", password: "" });
+    const [ navigate, setNavigate ] = useState(null);
+
+    if (navigate !== null) {
+        return (
+            <Navigate replace to={navigate} />
+        );
+    }
 
 
     return (
@@ -49,11 +57,24 @@ export default function LoginPage(props) {
                     <br></br>
                     <div style={{ ...centerFlexDivStyle, }}>
                     <p style={{ marginRight: '2%' }}>Not registed yet?</p>
-                    <a className='pointer' style={{ color: _orange }} >Create an Account</a>
+                    <a className='pointer' style={{ color: _orange }} onClick={() => { setNavigate(ROUTES.SIGNUP); }} >Create an Account</a>
                     </div>
                     <br></br>
                     {/* submit button */}
-                    <NormalButton text="LOG IN" sx={{ width: '65%', borderRadius: 10 }} />
+                    <NormalButton text="LOG IN" sx={{ width: '65%', borderRadius: 10 }} onClick={
+                        // send login request to the api
+                        async () => {
+                            try {
+                                const res = await axios.post(api_url + 'auth/login', loginInfo);
+                                console.log("Login result:", res);
+                                setNavigate(ROUTES.DASHBOARD);
+                            }
+                            catch (err) {
+                                console.log("Login failed");
+                                alert('Wrong username or password!');
+                            }
+                        }
+                    }/>
                 </div>
                 </div>
             {/* image with text */}
