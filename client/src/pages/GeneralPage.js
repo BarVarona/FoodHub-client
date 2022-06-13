@@ -10,8 +10,6 @@ import FriendsPage from "./FriendsPage";
 import AboutPage from "./AboutPage";
 import ProfilePage from "./ProfilePage";
 
-
-
 export default function GeneralPage(props) {
     const [ activePage, setActivePage ] = useState(AppPages.REVIEWS);
     const [ activeProfile, setActiveProfile ] = useState(null);
@@ -36,9 +34,12 @@ export default function GeneralPage(props) {
         }
     }
 
+    goToProfilePage = (profileId) => {
+        setActiveProfile(profileId);
+        setActivePage(AppPages.PROFILE);
+    }
 
-
-    return <div style={{
+        return <div style={{
         display: 'grid',
         gridTemplateRows: '1fr 11fr',
         gridTemplateColumns: '1fr 11fr',
@@ -56,3 +57,4 @@ export default function GeneralPage(props) {
 }
 
 // TODO: think of more elegant solution
+export let goToProfilePage;

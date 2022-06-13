@@ -12,8 +12,12 @@ import { Rating } from '@mui/material';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import OutlinedButton from '../atoms/OutlinedButton';
 import { useState } from 'react';
-import axios from 'axios';
+import { ROUTES } from '../../consts/routes.const';
 import { Navigate } from 'react-router-dom';
+import axios from 'axios';
+import { api_url } from "../../consts/general.const";
+import APIService from '../../services/api.service';
+import UploadFileButton from '../atoms/UploadFileButton';
 
 const style = {
     position: 'absolute',
@@ -49,6 +53,7 @@ export default function PostRecipeModal(props) {
         description: '',
         ingredients: ['','','',''],
         instructions: '',
+        file: null
     });
 
     const handleOpen = () => setOpen(true);
@@ -59,7 +64,7 @@ export default function PostRecipeModal(props) {
             marginRight: 'auto',
             marginLeft: '3%',
             marginTop: '2%',
-            height: '17%'
+            marginBottom: '1%',
         }}>
             <NormalButton onClick={handleOpen} text='+ADD NEW RECIPE'/>
             <Modal
@@ -74,10 +79,11 @@ export default function PostRecipeModal(props) {
                             <h2>Post new recipe</h2>
                             <div style={{ ...centerFlexDivStyle, width: '100%'}}>
                                 {/* name */}
-                                <TextInputField size="small" label='Dish name' sx={{ width: '50%'}} onChange={
+                                <TextInputField size="small" label='Dish name' sx={{ width: '50%', marginRight: '10%'}} onChange={
                                     element => { setPostData({...postData, dishName: element.target.value}) } }/>
-                                {/* upload images: TODO*/}
-                                <NormalButton text='Upload Images' sx={{ width: '35%', height: '10%', marginLeft: 'auto', marginRight: 'auto'}} />
+                                <UploadFileButton setFile={(file) => {
+                                    setPostData({ ...postData, file })}}
+                                />
                             </div>
                             <br></br>
                             {/* description */}
@@ -121,20 +127,25 @@ export default function PostRecipeModal(props) {
                             <OutlinedButton text='Submit !' sx={{ width: '20%', marginTop: '5%', marginLeft: 'auto', marginRight: '3%' }} onClick={
                                 // send post request to the api
                                 async () => {
-                                    try {
-                                        // TODO:
-                                        alert('!TODO! send to api: ' + JSON.stringify(postData));
-                                        // const res = await axios.post(api_url + 'auth/login', loginInfo);
-                                        // console.log("Post recipe result:", res);
-                                        alert('Recipe posted successfully!');
+                                    const res = await APIService.post('recipes', {
+                                        dishName: postData.dishName,
+                                        generalDesciption: postData.description,
+                                        numOfIngridients: postData.ingredients.length,
+                                        ingredients: postData.ingredients,
+                                        instructions: postData.instructions,
+                                        date: new Date()
+                                    })
+                                    if (res === null) {
+                                        return;
                                     }
-                                    catch (err) {
-                                        console.log("Recipe post failed", err);
-                                        alert('Please try again!');
-                                    }
-                                    finally {
-                                        window.location.reload();
-                                    }
+                                    
+                                    // upload image:
+                                    await APIService.uploadImage(`recipes/${res._id}/image`, postData.file);
+
+                                    console.log("Post recipe result:", res);
+                                    alert('Recipe posted successfully!');
+                                    setOpen(false);
+                                    props.fetchData();
                                 }
                             }/>
                     </div>
