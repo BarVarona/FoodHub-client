@@ -12,6 +12,7 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import Profile from '../atoms/Profile';
 import LocationIcon from '../atoms/LocationIcon';
 import ProfileIcon from '../molecules/ProfileIcon';
+import { api_url } from '../../consts/general.const';
 
 const style = {
   position: 'absolute',
@@ -57,26 +58,26 @@ export default function ReviewModal(props) {
                     <CardMedia
                         component="img"
                         height={200}
-                        image={props.images[0]}
+                        image={`${api_url}general/image?imageName=${props.images[0]}`}
                         sx={{ borderRadius: cards_radius }}
                     />
                 </div>
                 <div style={{ display: 'flex' }}>
                     {/* date */}
-                    <DateCard date={props.date} sx={{ marginRight: '20%'}}/>
+                    <DateCard date={props.dateOfVisit} sx={{ marginRight: '20%'}}/>
                     {/* info */}
                     <div style={{display: 'flex', flexDirection: 'column'}}>
                         <h3 style={{ margin: 1, textAlign: 'left' }}>{props.restaurantName}</h3>
                         <div style={{display: 'flex'}}>
                             <LocationIcon sx={{ marginRight: 0.5 }} />
-                            <p style={{ margin: 1, textAlign: 'left', fontSize: fontsize_12 }}>Ramat Hayal, Tel Aviv</p>
+                            <p style={{ margin: 1, textAlign: 'left', fontSize: fontsize_12 }}>{props.location}</p>
                         </div>
                     </div>
                 </div>
                 {/* Review text */}
                 <h5>Total overview:</h5>
                 <Typography height={58} variant="body2" color="text.secondary" textAlign={'left'}
-                sx={{ overflowY:'scroll' }}>{props.content}</Typography>
+                sx={{ overflowY:'scroll' }}>{props.totalOverview}</Typography>
                 <br></br>
                 <div style={{ display: 'flex' }}>
                     {/* Dishes */}
@@ -87,7 +88,7 @@ export default function ReviewModal(props) {
                             color: _orange,
                             textAlign: 'center'
                         }} />
-                        <p>{props.dishes?.join(', ')}</p>
+                        <p>{props.dishesNames?.join(', ')}</p>
                     </div>
                     {/* price */}
                     <div style={{...centerFlexColDivStyle}}>
@@ -97,33 +98,32 @@ export default function ReviewModal(props) {
                             color: _orange,
                             textAlign: 'center'
                         }} />
-                        <p>{props.price}₪</p>
+                        <p>{props.totalPrice}₪</p>
                     </div>
                 </div>
 
                 {/* ratings */}
                 <div style={{...centerFlexDivStyle}}>
                     <p style={{ fontSize: fontsize_12}}>Service:</p>
-                    <Rating sx={{ display: 'flex', marginLeft: '4%'}} name="read-only" value={props.rating} readOnly />
+                    <Rating sx={{ display: 'flex', marginLeft: '4%'}} name="read-only" value={props.serviceRating} readOnly />
                 </div>
                 <div style={{...centerFlexDivStyle}}>
                     <p style={{ fontSize: fontsize_12}}>Food:</p>
-                    <Rating sx={{ display: 'flex', marginLeft: '4%'}} name="read-only" value={props.rating} readOnly />
+                    <Rating sx={{ display: 'flex', marginLeft: '4%'}} name="read-only" value={props.foodRating} readOnly />
                 </div>
                 <div style={{...centerFlexDivStyle}}>
                     <p style={{ fontSize: fontsize_12}}>Total:</p>
-                    <Rating sx={{ display: 'flex', marginLeft: '4%'}} name="read-only" value={props.rating} readOnly />
+                    <Rating sx={{ display: 'flex', marginLeft: '4%'}} name="read-only" value={props.totalRating} readOnly />
                 </div>
                 {/* profile */}
                 <div style={{ display: 'flex', marginTop: '2%', marginLeft: 'auto'  }}>
-                    <ProfileIcon profileName="Rick Sanchez" profileId="2323" sx={{
+                    <ProfileIcon withName={true} user={props.user} sx={{
                         marginTop: 'auto',
                         marginBottom: 'auto',
                         marginRight: 1,
                         width: 35,
                         height: 35
                     }}/>
-                    <p style={{ fontSize: 14, fontWeight: fontweight_middle }}>{"Rick Sanchez"}</p>
                 </div>
             </div>
             </Box>

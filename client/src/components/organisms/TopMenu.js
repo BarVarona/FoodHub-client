@@ -5,8 +5,30 @@ import { deepOrange } from '@mui/material/colors';
 import { AppPages, AppPagesTopMenu } from '../../consts/pages.const';
 import TopMenuItem from '../molecules/TopMenuItem';
 import ProfileIcon from '../molecules/ProfileIcon';
+import { useState } from 'react';
+import APIService from '../../services/api.service';
+import { useEffect } from 'react';
+import Loading from '../atoms/Loading';
 
 export default function TopMenu(props) {
+    
+    const [ user, setUser ] = useState(null);
+
+    const fetchData = async () => {
+        // get user
+        const res = await APIService.get('user');
+        setUser(res);
+    }
+
+    useEffect(() => {        
+        fetchData();
+    }, []);
+
+    if (user === null) {
+        return <Loading/>;
+    }
+
+
     return (
     <Box
         sx={{
@@ -18,7 +40,7 @@ export default function TopMenu(props) {
     >
         {
             AppPagesTopMenu[props.activePage].map((title, index) => {
-                const selected = props.topMenuOption < AppPagesTopMenu.length - 1;
+                const selected =  props.topMenuOption > AppPagesTopMenu[props.activePage].length - 1;
                 return (
                     <TopMenuItem
                         topMenuOption={props.topMenuOption}
@@ -32,7 +54,7 @@ export default function TopMenu(props) {
             })
         }
         <div style={{ marginLeft: 'auto', marginRight: '2%'}}>
-            <ProfileIcon profileName="Test" profileId="0"/>
+            <ProfileIcon user={user}/>
         </div>
     </Box>
  )

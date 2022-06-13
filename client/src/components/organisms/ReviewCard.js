@@ -8,12 +8,13 @@ import Rating from '@mui/material/Rating';
 import DateCard from '../atoms/DateCard';
 import { fontsize_12, reviewCard_height, cards_radius, fontweight_middle } from '../../styles/_sizes';
 import Likes from '../atoms/Likes';
-import Comments from '../molecules/Comments';
 import Profile from '../atoms/Profile';
 import ReviewModal from './ReviewModal';
 import LocationIcon from '../atoms/LocationIcon';
 import ProfileIcon from '../molecules/ProfileIcon';
-
+import { api_url } from "../../consts/general.const";
+import APIService from '../../services/api.service';
+import CommentsModal from '../organisms/CommentsModal';
 
 export default function ReviewCard(props) {
 
@@ -23,7 +24,7 @@ export default function ReviewCard(props) {
         }}>
             <Card sx={{
                 width: '97.5%',
-                height: reviewCard_height,
+                height: 246,
                 display: "flex",
                 flexDirection: "row",
                 borderRadius: cards_radius,
@@ -33,8 +34,8 @@ export default function ReviewCard(props) {
                 <div style={{borderRadius: '30px', width: '40%'}}>
                     <CardMedia
                         component="img"
-                        height={reviewCard_height}
-                        image={props.images[0]}
+                        height={245}
+                        image={`${api_url}general/image?imageName=${props.images[0]}`}
                         sx={{ borderRadius: cards_radius }}
                     />
                 </div>
@@ -45,16 +46,16 @@ export default function ReviewCard(props) {
                 }}>
                 <div style={{ display: 'flex', margin: 10 }}>
                     {/* date */}
-                    <DateCard date={ props.date } sx={{ marginRight: 3 }}/>
+                    <DateCard date={ props.dateOfVisit } sx={{ marginRight: 3 }}/>
                     {/* restaurant info */}
                     <div>
-                        <h3 style={{ margin: 1, textAlign: 'left' }}>{props.restaurantName}</h3>
+                        <h3 style={{ margin: 1, textAlign: 'left', fontSize: '1.3vw', }}>{props.restaurantName}</h3>
                         <div style={{display: 'flex'}}>
                             <LocationIcon sx={{ marginRight: 0.5 }} />
-                            <p style={{ margin: 1, textAlign: 'left', fontSize: fontsize_12 }}>Ramat Hayal, Tel Aviv</p>
+                            <p style={{ margin: 1, textAlign: 'left', fontSize: '1vw' }}>{props.location}</p>
                         </div>
                         
-                        <Rating sx={{ display: 'flex'}} name="read-only" value={props.rating} readOnly />
+                        <Rating sx={{ display: 'flex'}} name="read-only" value={props.totalRating} readOnly />
                     </div>
                 </div>
                 <div>
@@ -65,19 +66,18 @@ export default function ReviewCard(props) {
                         overflow: 'hidden',
                         whiteSpace: 'nowrap'
                     }}
-                    >{props.content}</Typography>
+                    >{props.totalOverview}</Typography>
                 </div>
                 <div style={{ display: 'flex' }}>
                     {/* profile */}
                     <div style={{ display: 'flex', marginTop: '2%'  }}>
-                        <ProfileIcon profileName="Rick Sanchez" profileId="2323" sx={{
+                        <ProfileIcon user={props.user} withName sx={{
                             marginTop: 'auto',
                             marginBottom: 'auto',
                             marginRight: 1,
                             width: 35,
                             height: 35
                         }}/>
-                        <p style={{ fontSize: 15, fontWeight: fontweight_middle }}>{"Rick Sanchez"}</p>
                     </div>
                     <ReviewModal {...props}/>
                 </div>
@@ -87,8 +87,16 @@ export default function ReviewCard(props) {
                     height: 20,
                     color: _orange,
                 }}>
-                    <Likes likes={props.likes.length}/>
-                    <Comments comments={props.comments}/>
+                    <Likes likes={props.likes} onClick={async () => {
+                        const newLikes = await APIService.put(`reviews/${props._id}/like`);
+                        return newLikes;
+                    }}/>
+                    <CommentsModal comments={props.comments} onClick={async (commentContent) => {
+                        const updatedComments = await APIService.put(`reviews/${props._id}/comment`, {
+                            content: commentContent
+                        });
+                        return updatedComments;
+                    }}/>
                 </div>
                 </CardContent>
             </Card>

@@ -11,7 +11,7 @@ import AboutPage from "./AboutPage";
 import ProfilePage from "./ProfilePage";
 
 export default function GeneralPage(props) {
-    const [ activePage, setActivePage ] = useState(AppPages.REVIEWS);
+    const [ activePage, setActivePage ] = useState(AppPages.HOME);
     const [ activeProfile, setActiveProfile ] = useState(null);
     const [ topMenuOption, setTopMenuOption ] = useState(0);
 
@@ -39,9 +39,9 @@ export default function GeneralPage(props) {
         setActivePage(AppPages.PROFILE);
     }
 
-        return <div style={{
+    return <div style={{
         display: 'grid',
-        gridTemplateRows: '1fr 11fr',
+        gridTemplateRows: '1fr 20fr',
         gridTemplateColumns: '1fr 11fr',
     }}>
         <LogoCard/>

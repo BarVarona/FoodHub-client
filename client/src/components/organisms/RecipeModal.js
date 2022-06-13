@@ -8,6 +8,8 @@ import DateCard from '../atoms/DateCard';
 import Profile from '../atoms/Profile';
 import ProfileIcon from '../molecules/ProfileIcon';
 import { fontweight_middle } from '../../styles/_sizes';
+import { useState } from 'react';
+import { api_url } from '../../consts/general.const';
 
 const style = {
   position: 'absolute',
@@ -21,7 +23,7 @@ const style = {
 };
 
 export default function RecipeModal(props) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -41,7 +43,7 @@ export default function RecipeModal(props) {
                     <CardMedia
                         component="img"
                         height={230}
-                        image={props.image}
+                        image={`${api_url}general/image?imageName=${props.images[0]}`}
                         sx={{ borderRadius: 1 }}
                     />
                 </div>
@@ -60,17 +62,19 @@ export default function RecipeModal(props) {
                 <Typography
                     width='100%' height={200}
                     variant="body2" color="text.secondary" textAlign={'left'}
-                    sx={{ overflowY: 'scroll' }}
-                >{props.content}
+                    sx={{ overflowY: 'scroll', whiteSpace: 'pre-line' }}
+                >
+                    {props.generalDesciption+'\nIngredients:\n'}
+                    {props.ingredients.map(ingredient=>`- ${ingredient}`).join('\n') + '\n\nInstructions:\n'}
+                    {props.instructions}
                 </Typography>
 
                 <div style={{ display: 'flex', marginLeft: 'auto', marginTop: '5%' }}>
-                    <ProfileIcon profileName="Rick Sanchez" profileId="2323" sx={{
+                    <ProfileIcon user={props.user} withName sx={{
                         marginTop: 'auto',
                         marginBottom: 'auto',
                         marginRight: 1,
                     }}/>
-                    <p style={{ fontSize: 15, fontWeight: fontweight_middle }}>{"Rick Sanchez"}</p>
                 </div>
             </div>
             </Box>

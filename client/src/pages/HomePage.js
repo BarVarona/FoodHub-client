@@ -7,38 +7,65 @@ import PostCard from "../components/organisms/PostCard";
 import TopReviewCard from "../components/molecules/TopReviewCard";
 import { useEffect } from "react";
 import PostPost from "../components/molecules/PostPost";
+import { useState } from "react";
+import APIService from '../services/api.service';
+import { CircularProgress } from "@mui/material";
+import Loading from "../components/atoms/Loading";
 
 export default function HomePage(props) {
 
-    // for testing:
+    const [ data, setTimeLine ] = useState(null);
+
+    const fetchData = async () => {
+        const res = await APIService.get(`general/timeline?foryou=${props.topMenuOption}`);
+        setTimeLine(res);
+    }
+
+    useEffect(() => {
+        setTimeLine(null);
+        fetchData();
+    }, [props.topMenuOption]);
+
+    if (data === null) {
+        return <Loading />
+    }
+    
     return (
         <div style={{ display: 'flex' }}>
             <div style={{ width: '58%'}}>
                 <br></br>
-                <PostPost/>
+                <PostPost fetchData={fetchData}/>
                 <List
                     sx={{
-                        width: '100%',
+                        width: '50vw',
                         marginTop: '1%',
                         position: 'relative',
                         overflow: 'auto',
-                        maxHeight: 600,
+                        maxHeight: '50vw',
                         '& ul': { padding: 0 },
                     }}
-                >   
-                    <ListItem key={`recipe-1`}>
-                        <PostCard {...mock_posts[0]}/>
-                    </ListItem>
-                    <ListItem key={`recipe-10`}>
-                        <ReviewCard {...mock_reviews[0]}/>
-                    </ListItem>         
-                    <ListItem key={`recipe-0`}>
-                        <ReviewCard {...mock_reviews[0]}/>
-                    </ListItem>
-                    
-                    <ListItem key={`recipe-3`}>
-                        <RecipeCard {...mock_recipes[0]}/>
-                    </ListItem>
+                >
+                {
+                    !data.timeline ? <Loading/> :
+                    data.timeline.map((element, index) => {
+                        return (
+                            <ListItem key={`element-` + index}>
+                                {
+                                    element.type === "Post" ?
+                                    <PostCard {...element}/> :
+                                    element.type === "Review" ?
+                                    <ReviewCard {...element}/> :
+                                    <RecipeCard {...element}/>
+                                }
+                                
+                            </ListItem>
+                        );
+                    })
+                }
+                {/* Bottom Padding */}
+                <ListItem><br/><br/><br/><br/></ListItem>
+                <ListItem><br/><br/><br/><br/></ListItem>
+                <ListItem><br/><br/><br/><br/></ListItem>
                 </List>
             </div>
             <div style={{
@@ -49,10 +76,10 @@ export default function HomePage(props) {
                 marginTop: '2%',
                 marginBottom: 'auto',
             }}>
-                <h4 style={{ textAlign: 'left', marginLeft: '5%' }}>Top 3 reviews</h4>
-                <TopReviewCard {...mock_reviews[0]} />
-                <TopReviewCard {...mock_reviews[0]} />
-                <TopReviewCard {...mock_reviews[0]} />
+                <h4 style={{ textAlign: 'left', marginLeft: '5%', fontSize: '1.2vw' }}>Top 3 reviews</h4>
+                <TopReviewCard {...data.topReviews[0]} />
+                <TopReviewCard {...data.topReviews[1]} />
+                <TopReviewCard {...data.topReviews[2]} />
             </div>
         </div>
     );
