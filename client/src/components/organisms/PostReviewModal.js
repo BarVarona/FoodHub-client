@@ -14,7 +14,10 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import OutlinedButton from '../atoms/OutlinedButton';
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-
+import axios from 'axios';
+import { api_url } from "../../consts/general.const";
+import APIService from '../../services/api.service';
+import UploadFileButton from '../atoms/UploadFileButton';
 
 const style = {
     position: 'absolute',
@@ -55,6 +58,7 @@ export default function PostReviewModal(props) {
         foodRating: 0,
         totalRating: 0,
         price: '',
+        file: null
     });
     
     const handleOpen = () => setOpen(true);
@@ -66,7 +70,6 @@ export default function PostReviewModal(props) {
             marginLeft: '3%',
             marginTop: '2%',
             marginBottom: '1%',
-            height: '17%'
         }}>
             <NormalButton onClick={handleOpen} text='+ADD NEW REVIEW'/>
             <Modal
@@ -126,8 +129,9 @@ export default function PostReviewModal(props) {
                                     element => { setPostData({...postData, location: element.target.value}) }}/>
                             </div>
                             <br></br>
-                            {/* upload images: TODO*/}
-                            <NormalButton text='Upload Images' sx={{ width: '60%' }} />
+                            <UploadFileButton setFile={(file) => {
+                                setPostData({ ...postData, file })
+                            }}/>
                             <br></br>
                             <br></br>
                             <br></br>
@@ -161,21 +165,30 @@ export default function PostReviewModal(props) {
                             {/* submit */}
                             <OutlinedButton text='Submit !' sx={{ width: '50%', marginTop: '25%', marginLeft: 'auto' }} onClick={
                                 // send post request to the api
-                                async () => {
-                                    try {
-                                        // TODO:
-                                        alert('!TODO! send to api: ' + JSON.stringify(postData));
-                                        // const res = await axios.post(api_url + 'auth/login', loginInfo);
-                                        // console.log("Post review result:", res);
-                                        alert('Review posted successfully!');
+                                async () => {                                    
+                                    const res = await APIService.post('reviews', {
+                                        restaurantName: postData.restaurantName,
+                                        totalOverview: postData.overview,
+                                        dateOfVisit: postData.date,
+                                        numOfDishes: postData.dishes.length,
+                                        dishesNames: postData.dishes,
+                                        totalPrice: postData.price,
+                                        location: postData.location,
+                                        serviceRating: postData.serviceRating,
+                                        foodRating: postData.foodRating,
+                                        totalRating: postData.totalRating
+                                    });
+                                    if (res === null) {
+                                        return;
                                     }
-                                    catch (err) {
-                                        console.log("Review post failed", err);
-                                        alert('Please try again!');
-                                    }
-                                    finally {
-                                        window.location.reload();
-                                    }
+
+                                    // upload image:
+                                    await APIService.uploadImage(`reviews/${res._id}/image`, postData.file);
+
+                                    console.log("Post review result:", res);
+                                    alert('Review posted successfully!');
+                                    setOpen(false);
+                                    props.fetchData();
                                 }
                             }/>
                         </div>
