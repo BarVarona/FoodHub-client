@@ -55,7 +55,7 @@ a[href], input[type='submit'], input[type='image'], label[for], select, button, 
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: #D59300;
 }
 
 /* Handle on hover */

@@ -7,6 +7,7 @@ import { _orange } from "../styles/_colors";
 import axios from 'axios';
 import { ROUTES } from "../consts/routes.const";
 import { Navigate } from "react-router-dom";
+import Cookies from 'universal-cookie';
 
 const centerFlexDivStyle = {
     width: '50%',
@@ -31,52 +32,65 @@ export default function LoginPage(props) {
         );
     }
 
-
     return (
         <div style={{ display: 'flex', height: '100%' }}>
             <div style={{...centerFlexColDivStyle, height: '100%'}}>
                 <p style={{
-                    fontSize: 40,
+                    fontSize: '3.5vw',
                     fontWeight: 400,
                     color: _orange,
                     marginTop: '10%',
                     marginBottom: '0'
                 }}>Foodhub</p>
                 <div style={{ width: '75%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <h3 style={{ marginBottom: '0'}}>Login</h3>
+                    <h3 style={{ marginBottom: '0', fontSize: '1.2vw'}}>Login</h3>
                     {/* email */}
-                    <p>Email</p>
-                    <TextInputField  size="small" sx={{ width: '65%' }} onChange={
+                    <p style={{fontSize: '1vw'}}>Email</p>
+                    <TextInputField inputProps={{
+                        style: { height: '1.5vw' }
+                    }} size="small" sx={{ width: '65%' }} onChange={
                         element => { setLoginInfo({...loginInfo, email: element.target.value}) }
                     }/>
                     {/* password */}
-                    <p>Password</p>
-                    <TextInputField type="password" size="small" sx={{ width: '65%' }} onChange={
+                    <p style={{fontSize: '1vw'}}>Password</p>
+                    <TextInputField inputProps={{
+                        style: { height: '1.5vw' }
+                    }} type="password" size="small" sx={{ width: '65%' }} onChange={
                         element => { setLoginInfo({...loginInfo, password: element.target.value}) }
                     }/>
                     <br></br>
                     <div style={{ ...centerFlexDivStyle, }}>
-                    <p style={{ marginRight: '2%' }}>Not registed yet?</p>
-                    <a className='pointer' style={{ color: _orange }} onClick={() => { setNavigate(ROUTES.SIGNUP); }} >Create an Account</a>
+                    <p style={{ marginRight: '2%', fontSize: '0.9vw' }}>Not registed yet?</p>
+                    <a className='pointer' style={{ fontSize: '0.9vw', color: _orange }} onClick={() => { setNavigate(ROUTES.SIGNUP); }} >Create an Account</a>
                     </div>
                     <br></br>
                     {/* submit button */}
-                    <NormalButton text="LOG IN" sx={{ width: '65%', borderRadius: 10 }} onClick={
+                    <NormalButton text="LOG IN" sx={{ fontSize: '0.9vw', width: '65%', borderRadius: 10 }} onClick={
                         // send login request to the api
                         async () => {
                             try {
                                 const res = await axios.post(api_url + 'auth/login', loginInfo);
+                                
+                                const cookies = new Cookies();
+                                cookies.set('jwtToken', res.data.jwtToken);
+                                cookies.set('userId', res.data._id);
+
                                 console.log("Login result:", res);
                                 setNavigate(ROUTES.DASHBOARD);
                             }
                             catch (err) {
-                                console.log("Login failed");
-                                alert('Wrong username or password!');
+                                if (err.toJSON().status === 400) {
+                                    alert('Wrong username or password!');
+                                }
+                                else {
+                                    alert('Internal error, please try again later!');
+                                }
+                                
                             }
                         }
                     }/>
                 </div>
-                </div>
+            </div>
             {/* image with text */}
             <div className="loginImageDiv" style={{ width: '50%', height: '100%' }}>
                 <div className="loginImageImg" style={{
@@ -91,7 +105,7 @@ export default function LoginPage(props) {
                 position: 'absolute',
                 left: '52%',
                 top: '12%',
-                fontSize: 80,
+                fontSize: '5vw',
                 textAlign: 'left',
                 fontWeight: 10,
                 lineHeight: 1.2

@@ -6,10 +6,13 @@ import Typography from '@mui/material/Typography';
 import DateCard from '../atoms/DateCard';
 import { cards_radius, fontweight_middle, recipeCardImg_height } from '../../styles/_sizes';
 import Likes from '../atoms/Likes';
-import Comments from '../molecules/Comments';
 import Profile from '../atoms/Profile';
 import RecipeModal from './RecipeModal';
 import ProfileIcon from '../molecules/ProfileIcon';
+import { api_url } from "../../consts/general.const";
+import axios from 'axios';
+import APIService from '../../services/api.service';
+import CommentsModal from '../organisms/CommentsModal';
 
 export default function RecipeCard(props) {
     return (
@@ -21,7 +24,7 @@ export default function RecipeCard(props) {
                 <CardMedia
                     component="img"
                     height={recipeCardImg_height}
-                    image={props.image}
+                    image={`${api_url}general/image?imageName=${props.images[0]}`}
                     sx={{ borderRadius: cards_radius }}
                 />
             </div>
@@ -38,7 +41,7 @@ export default function RecipeCard(props) {
                     height: 320
                 }}>
                 {/* name */}
-                <h2 style={{ textAlign: 'center' }}>{props.name}</h2>
+                <h2 style={{ textAlign: 'center' }}>{props.dishName}</h2>
                 <div style={{ display: 'flex' }}>
                     <div style={{width: '75%'}}>
                     {/* Recipe text */}
@@ -50,7 +53,9 @@ export default function RecipeCard(props) {
                         overflow: 'hidden',
                     }}
                     >
-                    {props.content}
+                    {props.generalDesciption+'\nIngredients:\n'}
+                    {props.ingredients.map(ingredient=>`- ${ingredient}`).join('\n') + '\n\nInstructions:\n'}
+                    {props.instructions}
                     </Typography>
                     </div>
                     <div style={{width: '25%', display: 'flex', flexDirection: 'column'}}>
@@ -62,16 +67,23 @@ export default function RecipeCard(props) {
                     </div>
                 </div>
                 <div style={{ display: 'flex', marginTop: '2%'}}>
-                    <Likes likes={props.likes.length}/>
-                    <Comments comments={props.comments}/>
+                    <Likes likes={props.likes} onClick={async () => {
+                        const newLikes = await APIService.put(`recipes/${props._id}/like`);
+                        return newLikes;
+                    }}/>
+                    <CommentsModal comments={props.comments} onClick={async (commentContent) => {
+                        const updatedComments = await APIService.put(`recipes/${props._id}/comment`, {
+                            content: commentContent
+                        });
+                        return updatedComments;
+                    }}/>
                     
                     <div style={{ display: 'flex', marginLeft: 'auto', marginRight: '3%'  }}>
-                        <ProfileIcon profileName="Rick Sanchez" profileId="2323" sx={{
+                        <ProfileIcon user={props.user} withName={true} sx={{
                             marginTop: 'auto',
                             marginBottom: 'auto',
                             marginRight: 1,
                         }}/>
-                        <p style={{ fontSize: 15, fontWeight: fontweight_middle }}>{"Rick Sanchez"}</p>
                     </div>
                 </div>
                 </CardContent>

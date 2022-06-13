@@ -37,7 +37,6 @@ export default function SignupPage(props) {
             <Navigate replace to={navigate} />
         );
     }
-   
 
     return (
         <div style={{ display: 'flex', height: '100%' }}>
@@ -51,37 +50,47 @@ export default function SignupPage(props) {
             </div>
             <div style={{...centerFlexColDivStyle, width: '70%', height: '100%'}}>
                 <p style={{
-                    fontSize: 45,
+                    fontSize: '3vw',
                     fontWeight: 450,
                     color: _orange,
                     marginBottom: '0'
                 }}>Foodhub</p>
                 {/* register form */}
                 <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <h3 style={{ marginBottom: '0'}}>Register</h3>
+                    <h3 style={{ marginBottom: '0', fontSize: '1.1vw'}}>Register</h3>
                     {/* first name */}
-                    <p style={{ marginBottom: 5 }}>First name</p>
-                    <TextInputField  size="small" sx={{ width: '65%' }} onChange={
+                    <p style={{ marginBottom: 5, fontSize: '1vw' }}>First name</p>
+                    <TextInputField inputProps={{
+                        style: { height: '1.4vw' }
+                    }}  size="small" sx={{ width: '65%' }} onChange={
                         element => { setRegisterInfo({...registerInfo, firstName: element.target.value}) }
                     }/>
                     {/* last name */}
-                    <p style={{ marginBottom: 5 }}>Last name</p>
-                    <TextInputField size="small" sx={{ width: '65%' }} onChange={
+                    <p style={{ marginBottom: 5, fontSize: '1vw' }}>Last name</p>
+                    <TextInputField inputProps={{
+                        style: { height: '1.4vw' }
+                    }} size="small" sx={{ width: '65%' }} onChange={
                         element => { setRegisterInfo({...registerInfo, lastName: element.target.value}) }
                     }/>
                     {/* email */}
-                    <p style={{ marginBottom: 5 }}>Email</p>
-                    <TextInputField size="small" sx={{ width: '65%' }} onChange={
+                    <p style={{ marginBottom: 5, fontSize: '1vw' }}>Email</p>
+                    <TextInputField inputProps={{
+                        style: { height: '1.4vw' }
+                    }} size="small" sx={{ width: '65%' }} onChange={
                         element => { setRegisterInfo({...registerInfo, email: element.target.value}) }
                     }/>
                     {/* password */}
-                    <p style={{ marginBottom: 5 }}>Password</p>
-                    <TextInputField type="password" size="small" sx={{ width: '65%' }} onChange={
+                    <p style={{ marginBottom: 5, fontSize: '1vw' }}>Password</p>
+                    <TextInputField inputProps={{
+                        style: { height: '1.4vw' }
+                    }} type="password" size="small" sx={{ width: '65%' }} onChange={
                         element => { setRegisterInfo({...registerInfo, password: element.target.value}) }
                     }/>
                     {/* confirm password */}
-                    <p style={{ marginBottom: 5 }}>Confirm password</p>
-                    <TextInputField type="password" size="small" sx={{ width: '65%' }} onChange={
+                    <p style={{ marginBottom: 5, fontSize: '1vw' }}>Confirm password</p>
+                    <TextInputField inputProps={{
+                        style: { height: '1.4vw' }
+                    }} type="password" size="small" sx={{ width: '65%' }} onChange={
                         element => { setRegisterInfo({...registerInfo, confirmPassword: element.target.value}) }
                     }/>
                     <br></br>
@@ -90,11 +99,11 @@ export default function SignupPage(props) {
                         <CheckBox onChange={
                         element => { setRegisterInfo({...registerInfo, agreeToTerm: !registerInfo.agreeToTerm}) }
                         }/>
-                        <p>I agree to the terms of use and privacy policy</p>
+                        <p style={{fontSize: '1vw'}}>I agree to the terms of use and privacy policy</p>
                     </div>
                     <br></br>
                     {/* submit button */}
-                    <NormalButton text="CREATE AN ACOOUNT" sx={{ width: '65%', borderRadius: 10 }} onClick={
+                    <NormalButton text="CREATE AN ACCOUNT" sx={{ width: '65%', borderRadius: 10, fontSize: '1vw' }} onClick={
                         // send register request to the api:
                         async () => {
                             if (!registerInfo.agreeToTerm) {
@@ -118,8 +127,15 @@ export default function SignupPage(props) {
                                 setNavigate(ROUTES.LOGIN);
                             }
                             catch (err) {
-                                console.log("Signup failed", err);
-                                alert('Username exists!');
+                                console.log("Signup failed", err.toJSON());
+
+                                if (err.toJSON().status === 400) {
+                                    alert('Username exists!');
+                                }
+                                else {
+                                    alert('Internal error, please try again later!');
+                                }                                
+                                
                             }
                         }
                     }/>

@@ -18,6 +18,7 @@ export default function DateCard(props) {
             lineHeight: 1.7,
             verticalAlign: 'middle',
             textAlign: 'center',
+            whiteSpace: 'break-spaces',
             ...props.sx
         }}>{month}{'\n'}{day}</Paper>
     )

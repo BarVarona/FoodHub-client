@@ -2,6 +2,7 @@ import { test_image } from '../consts/general.const';
 
 export const mock_posts = [
     {
+        userId: "629dc9fd848ff7ba0365fc89",
         name: 'Indian Chicken curry michal',
         content:  `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -14,6 +15,7 @@ export const mock_posts = [
 
 export const mock_recipes = [
     {
+        userId: "629dc9fd848ff7ba0365fc89",
         name: 'Indian Chicken curry michal',
         content:  `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -38,6 +40,7 @@ export const mock_recipes = [
         image: test_image,
     },
     {
+        userId: "629dc9fd848ff7ba0365fc89",
         name: 'Indian Chicken curry',
         content:  `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -64,6 +67,7 @@ export const mock_recipes = [
 ];
 export const mock_reviews = [
     {
+        userId: "629dc9fd848ff7ba0365fc89",
         restaurantName: 'Hudson Brasserie',
         content: `This imessive paella is a perfect party dish and a fun meal to cooktogether with your guests. Add 1 cup of frozen peas along with the mussels,if you like.
         This impressive paella is a perfect party dish and a fun meal to cook
@@ -94,6 +98,7 @@ export const mock_reviews = [
         price: 2000
     },
     {
+        userId: "629dc9fd848ff7ba0365fc89",
         restaurantName: 'Hudson Brasserie',
         content: `
         This impressive paella is a perfect party dish and a fun meal to cook
@@ -107,6 +112,7 @@ export const mock_reviews = [
         date: new Date()
     },
     {
+        userId: "629dc9fd848ff7ba0365fc89",
         restaurantName: 'Hudson Brasserie',
         content: `
         This impressive paella is a perfect party dish and a fun meal to cook
@@ -120,6 +126,7 @@ export const mock_reviews = [
         date: new Date()
     },
     {
+        userId: "629dc9fd848ff7ba0365fc89",
         restaurantName: 'Hudson Brasserie',
         content: `
         This impressive paella is a perfect party dish and a fun meal to cook
@@ -133,6 +140,7 @@ export const mock_reviews = [
         date: new Date()
     },
     {
+        userId: "629dc9fd848ff7ba0365fc89",
         restaurantName: 'Hudson Brasserie',
         content: `
         This impressive paella is a perfect party dish and a fun meal to cook
@@ -146,6 +154,7 @@ export const mock_reviews = [
         date: new Date()
     },
     {
+        userId: "629dc9fd848ff7ba0365fc89",
         restaurantName: 'Hudson Brasserie',
         content: `
         This impressive paella is a perfect party dish and a fun meal to cook
