@@ -44,7 +44,7 @@ export default function ProfilePage(props) {
 
     const isUserPage =  user._id === profile._id;
     const isFollowing = user.Following.some(id => profile._id === id);
-    const hasProfilePic = user.profilePicture && user.profilePicture.replace(/\s+/g, '') !== "";
+    const hasProfilePic = profile.profilePicture && profile.profilePicture.replace(/\s+/g, '') !== "";
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%', }}>
